@@ -58,18 +58,18 @@ public class Main {
 
 
             //define variables
-            String[] keywords = {"rules", "laws", "democracy", "self-determination", "institution", "power", "authority", "system", "rez", "decision", "vote", "influence", "resolution", "reconciliation", "think", "reciprocity", "advocacy", "leadership", "chang", "volunteering", "inclusiveness", "equity", "imagin", "empathy", "respect", "rights", "responsibility", "freedom", "justice", "fairness", "truth", "citizenship", "collaboration", "cooperation", "know", "connected", "belief", "perspective", "community", "relation", " story", "stories", "culture"};
+            String[] keywords = {"rules", "laws", "democracy", "self-determination", "institution", "power", "authority", "system", "rez", "decision", "vote", "influence", "resolution", "reconciliation", "think", "reciprocity", "advocacy", "leadership", "change", "volunteering", "inclusiveness", "equity", "imagination", "empathy", "respect", "rights", "responsibility", "freedom", "justice", "fairness", "truth", "citizenship", "collaboration", "cooperation", "know", "connected", "belief", "perspective", "community", "relation", " story", "stories", "culture"};
             String character = "hazel"; //hashes of all instances of character we're connecting keyword to
             long characterHash = generate(character);
-            long myHash = generate("my");
-            long meHash = generate("me");
-            long weHash = generate("we");
-            long iHash = generate("i");
+            long myHash = generate("my ");
+            long meHash = generate("me ");
+            long weHash = generate("we ");
+            long iHash = generate("i ");
             sparse = new boolean[haystack.length()+5][log2(haystack.length())+1];
             long score = 0;
 
-            //find occurences of character
-            HashSet<Integer> occurences = new HashSet<>();
+            //find occurrences of character
+            HashSet<Integer> occurrences = new HashSet<>();
             for(int l = 1, r = character.length(); r <= haystack.length(); ++l, ++r){
                 if(
                     (hash[r] - hash[l-1]*pow[r-l+1] % mod + mod) % mod == characterHash ||
@@ -78,13 +78,13 @@ public class Main {
                     (hash[r] - hash[l-1]*pow[r-l+1] % mod + mod) % mod == iHash ||
                     (hash[r] - hash[l-1]*pow[r-l+1] % mod + mod) % mod == weHash
                 ){
-                    occurences.add(l);
+                    occurrences.add(l);
                 } 
             }
 
             //build sparse table
             for(int i = 1; i < haystack.length(); ++i){
-                sparse[i][0] = occurences.contains(i);
+                sparse[i][0] = occurrences.contains(i);
             } 
             for(int j = 1; j <= log2(haystack.length()); ++j) {
                 for(int i = 1; i + (1 << j) - 1 <= haystack.length(); i++) {
@@ -93,16 +93,16 @@ public class Main {
             }
 
 
-            System.out.println("THE FOLLOWING ARE COUNTING THE OCCURENCES OF KEYWORDS FOR INDIGENOUS LITERARY THEORY IN THE GIVEN TEXT: ");
+            System.out.println("THE FOLLOWING ARE COUNTING THE OCCURRENCES OF KEYWORDS FOR INDIGENOUS LITERARY THEORY IN THE GIVEN TEXT RELATING TO THE SELECTED CHARACTER: ");
             System.out.println("------------------------------------------------------------------------------------------------------");
             ArrayList<Integer> examples = new ArrayList<>();
             //perform queries
             for(int i = 0; i < keywords.length; ++i){
                 String needle = keywords[i]; 
                 long needleHash = generate(needle); //generates needle hash
-                int range = 1000; //accepted number of characters the character name has to be within to 
+                int range = 2000; //accepted number of characters the character name has to be within to 
 
-                //find occurences of keyword (needle)
+                //find occurrences of keyword (needle)
                 int ans = 0;
                 for(int l = 1, r = needle.length(); r <= haystack.length(); ++l, ++r){
                     if(
@@ -113,7 +113,7 @@ public class Main {
                     }
                 }
 
-                System.out.println("occurences of " + needle + ": " + ans);
+                System.out.println("occurrences of " + needle + ": " + ans);
                 score += ans;
 
 
@@ -136,6 +136,9 @@ public class Main {
             }
 
             //print remaining
+            System.out.println("------------------------------------------------------------------------------------------------------");
+            System.out.println("FINAL SCORES: ");
+            System.out.println("------------------------------------------------------------------------------------------------------");
             out.flush();
             System.out.println("------------------------------------------------------------------------------------------------------");
             System.out.println("EXAMPLES OF USAGES OF KEYWORDS: ");
